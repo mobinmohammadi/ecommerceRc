@@ -16,11 +16,14 @@ app.use(cors({
 }))
 
 
-app.use(bodyParser.json())
+
+app.use(express.json())
 app.use(cookieParser())
 
 
 app.use('/api', require('./routes/authRoutes'))
+app.use('/api', require('./routes/dashboard/categoryRoutes'))
+app.use('/api', require('./routes/dashboard/productsRoutes'))
 app.get("/", (req, res) => res.send("My Backend"))
 dbConnect()
 app.listen(port, () => console.log(`Server is Running on Port ${port} 🤙`))

@@ -33,6 +33,7 @@ class authControllers {
                 responseReturn(res, 404, { error: "User Is Not Found" })
 
             }
+            
 
         } catch (error) {
             responseReturn(res, 500, { error: error.message })
@@ -116,11 +117,13 @@ class authControllers {
         try {
             if (role === "admin") {
                 const admin = await adminModel.findById(id)
-                responseReturn(res, 20, { userInfo: admin })
+                console.log('admin' , admin);
+                
+                responseReturn(res, 200, { userInfo: admin })
             }
-            if (role === "user") {
+            if (role === "seller") {
                 const seller = await sellerModel.findById(id)
-                responseReturn(res, 20, { userInfo: seller })
+                responseReturn(res, 200, { userInfo: seller })
             }
 
 
