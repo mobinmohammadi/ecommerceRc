@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { MdEmail } from "react-icons/md";
 import { IoMdPhonePortrait, IoIosArrowDown, IoMdArrowDropdown } from "react-icons/io";
 import { FaFacebookF, FaList, FaLock, FaUser, FaLinkedin, FaGithub, FaPhoneAlt } from "react-icons/fa";
