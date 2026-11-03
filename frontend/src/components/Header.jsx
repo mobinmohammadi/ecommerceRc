@@ -1,17 +1,23 @@
+import React, { useState } from 'react';
 import { MdEmail } from "react-icons/md";
 import { IoMdPhonePortrait } from "react-icons/io";
-import { FaFacebookF } from "react-icons/fa";
+import { FaFacebookF, FaList, FaLock, FaUser } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { Link } from 'react-router';
 
  
 
 const Header = () => {
+
+    const [showShidebar, setShowShidebar] = useState(true);
+    const user = true
+
     return (
         <div className='w-full bg-white'>
-            <div className='header-top bg-[#caddff] md-lg:hidden'>
+            <div className='header-top bg-[#caddff] '>
                 <div className='w-[85%] lg:w-[90%] mx-auto'>
                     <div className='flex w-full justify-between items-center h-[50px] text-slate-500'>
                         <ul className='flex justify-start items-center gap-8 font-semibold text-black'>
@@ -43,14 +49,38 @@ const Header = () => {
             </ul>
         </div>
 
+        {
+            user ? <Link className='flex cursor-pointer justify-center items-center gap-2 text-sm text-black' to='/dashboard'>
+                <span> <FaUser/> </span>
+                <span>Kazi Ariyan </span>
+                 </Link> : <Link className='flex cursor-pointer justify-center items-center gap-2 text-sm text-black' to='/login'>
+                <span> <FaLock /> </span>
+                <span>Login </span>
+                 </Link>
+        }
+ 
                             </div>
-                        </div>
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
 
-                    </div>
 
+        <div className='w-white'>
+         <div className='w-[85%] lg:w-[90%] mx-auto'>
+            <div className='h-20 md-lg:h-25 flex justify-between items-center flex-wrap'>
+                <Link to='/'>
+                    <img src="http://localhost:5173/images/logo.png" alt="" />
+                </Link>
+                <div className='justify-center items-center w-7.5 h-7.5 bg-white text-slate-600 border border-slate-600 rounded-sm cursor-pointer lg:hidden md-lg:flex xl:hidden hidden' onClick={() => setShowShidebar(false)}>
+                    <span> <FaList/> </span>
                 </div>
+            </div>
 
             </div>
+        </div>
+
+
            
         </div>
     );
