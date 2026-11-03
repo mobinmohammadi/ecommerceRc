@@ -77,7 +77,7 @@ const Header = () => {
               {user ? (
                 <Link className="flex cursor-pointer justify-center items-center gap-2 text-sm font-semibold text-slate-800 hover:text-[#059473] transition" to="/dashboard">
                   <FaUser />
-                  <span>Kazi Ariyan</span>
+                  <span>mobin mohammadi</span>
                 </Link>
               ) : (
                 <Link className="flex cursor-pointer justify-center items-center gap-2 text-sm font-semibold text-slate-800 hover:text-[#059473] transition" to="/login">
@@ -248,7 +248,7 @@ const Header = () => {
 
         <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col gap-4 text-sm">
           <Link to={user ? "/dashboard" : "/login"} className="flex items-center gap-2 text-slate-600 hover:text-[#059473]">
-            <FaUser /> {user ? "Kazi Ariyan" : "Login"}
+            <FaUser /> {user ? "mobin mohammad" : "Login"}
           </Link>
           <div className="flex items-center gap-2 text-slate-600">
             <MdEmail /> support@gmail.com
