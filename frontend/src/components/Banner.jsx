@@ -30,7 +30,7 @@ const Banner = () => {
                                 {[1, 2, 3, 4, 5, 6].map((img, i) => (
                                     <Link key={i} to='#' className="block">
                                         <img 
-                                            src={`http://localhost:5173/images/banner/${img}.jpg`} 
+                                            src={`/images/banner/${img}.jpg`} 
                                             alt={`banner-${img}`} 
                                             className="w-full object-cover rounded-md" 
                                         />

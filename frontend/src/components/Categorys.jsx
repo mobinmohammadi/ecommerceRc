@@ -43,7 +43,7 @@ const Categorys = () => {
                         <div className='w-full h-full relative p-3 flex flex-col items-center justify-center'>
                             {/* ✅ اصلاح مسیر عکس (به جای 3000 از 5173 استفاده شد) */}
                             <img 
-                                src={`http://localhost:5173/images/products/${i+1}.webp`} 
+                                src={`/images/products/${i+1}.webp`} 
                                 alt={c} 
                                 className="w-[100px] h-[100px] object-contain mb-4" 
                             />
