@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Link } from 'react-router';
 import { IoIosArrowForward } from "react-icons/io";
+
 import { Range } from 'react-range';
 import {AiFillStar} from 'react-icons/ai'
 import {CiStar} from 'react-icons/ci'
