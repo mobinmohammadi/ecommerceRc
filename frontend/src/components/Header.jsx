@@ -8,13 +8,11 @@ import { Link, useLocation } from "react-router";
 const Header = () => {
   const { pathname } = useLocation();
 
-  // ====== استیت‌ها ======
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState("");
 
-  // ====== دیتای تستی ======
   const user = true;
   const wishlist_count = 4;
   const cart_count = 4;
@@ -26,7 +24,7 @@ const Header = () => {
 
   const navLinks = [
     { to: "/", label: "HOME" },
-    { to: "/shop", label: "SHOP" },
+    { to: "/shops", label: "SHOP" },
     { to: "/blog", label: "BLOG" },
     { to: "/about", label: "ABOUT US" },
     { to: "/contact", label: "CONTACT US" },
@@ -39,7 +37,6 @@ const Header = () => {
 
   return (
     <div className="w-full bg-white font-sans shadow-sm pb-4">
-      {/* ================= 1. نوار بالای هدر (Top Bar) ================= */}
       <div className="hidden md:block bg-[#caddff] w-full">
         <div className="w-[90%] max-w-[1400px] mx-auto">
           <div className="flex w-full justify-between items-center h-[45px] text-slate-600">
@@ -55,7 +52,6 @@ const Header = () => {
             </ul>
 
             <div className="flex justify-center items-center gap-10">
-              {/* شبکه‌های اجتماعی */}
               <div className="flex justify-center items-center gap-4 text-slate-800">
                 <a href="#" aria-label="Facebook" className="hover:text-[#059473] transition"><FaFacebookF /></a>
                 <a href="#" aria-label="Twitter" className="hover:text-[#059473] transition"><FaTwitter /></a>
@@ -63,7 +59,6 @@ const Header = () => {
                 <a href="#" aria-label="GitHub" className="hover:text-[#059473] transition"><FaGithub /></a>
               </div>
 
-              {/* تغییر زبان */}
               <div className="flex group cursor-pointer text-slate-800 text-sm justify-center items-center gap-1 relative before:absolute before:h-[18px] before:w-[1px] before:bg-[#afafaf] before:-left-[20px] before:top-1/2 before:-translate-y-1/2 after:absolute after:h-[18px] after:w-[1px] after:bg-[#afafaf] after:-right-[20px] after:top-1/2 after:-translate-y-1/2">
                 <img src="/images/language.png" alt="language" className="w-5 h-5" />
                 <IoMdArrowDropdown />
@@ -73,7 +68,6 @@ const Header = () => {
                 </ul>
               </div>
 
-              {/* پروفایل کاربر */}
               {user ? (
                 <Link className="flex cursor-pointer justify-center items-center gap-2 text-sm font-semibold text-slate-800 hover:text-[#059473] transition" to="/dashboard">
                   <FaUser />
@@ -90,11 +84,9 @@ const Header = () => {
         </div>
       </div>
 
-      {/* ================= 2. ردیف وسط (لوگو، منو، آیکون‌ها) ================= */}
       <div className="w-[90%] max-w-[1400px] mx-auto">
         <div className="flex justify-between items-center h-[80px] lg:h-[90px]">
           
-          {/* لوگو و دکمه منوی موبایل */}
           <div className="flex items-center justify-between w-full lg:w-auto">
             <Link to="/" className="flex items-center gap-2">
               <img src="/images/logo.png" alt="Easy Shop" className="h-[35px] object-contain" />
@@ -104,7 +96,6 @@ const Header = () => {
             </button>
           </div>
 
-          {/* منوی اصلی دسکتاپ */}
           <ul className="hidden lg:flex items-center gap-8 text-[15px] font-semibold">
             {navLinks.map(({ to, label }) => (
               <li key={to}>
@@ -115,7 +106,6 @@ const Header = () => {
             ))}
           </ul>
 
-          {/* سبد خرید و علاقه‌مندی‌ها */}
           <div className="hidden lg:flex items-center gap-4">
             <Link to="/wishlist" className="relative flex justify-center items-center w-[45px] h-[45px] rounded-full bg-[#f5f5f5] hover:bg-[#e2e2e2] transition-all">
               <FaHeart className="text-[#059473] text-xl" />
@@ -134,11 +124,9 @@ const Header = () => {
         </div>
       </div>
 
-      {/* ================= 3. ردیف پایین (دسته‌بندی، سرچ، تماس) ================= */}
       <div className="w-[90%] max-w-[1400px] mx-auto mt-2 lg:mt-4">
         <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-6 w-full">
           
-          {/* دکمه All Category */}
           <div className="hidden lg:block relative w-[260px] shrink-0">
             <button
               onClick={() => setCategoryOpen((v) => !v)}
@@ -151,7 +139,6 @@ const Header = () => {
               <IoIosArrowDown className={`transition-transform duration-300 ${categoryOpen ? "rotate-180" : ""}`} />
             </button>
 
-            {/* لیست کشویی دسته‌بندی */}
             <div className={`absolute top-[55px] left-0 w-full bg-white border border-t-0 shadow-lg z-50 overflow-hidden transition-all duration-300 ${categoryOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"}`}>
               <ul className="py-2 text-slate-600 font-medium">
                 {categorys.map((c) => (
@@ -165,11 +152,9 @@ const Header = () => {
             </div>
           </div>
 
-          {/* نوار جستجو */}
           <div className="w-full flex-grow">
             <form onSubmit={(e) => e.preventDefault()} className="flex w-full h-[52px] border border-slate-200 rounded-sm relative bg-white group focus-within:border-[#059473] transition-colors">
               
-              {/* سلکتور در سرچ‌بار */}
               <div className="hidden md:flex items-center border-l border-slate-200 px-2 bg-transparent">
                 <select
                   value={category}
@@ -184,7 +169,6 @@ const Header = () => {
                 <IoIosArrowDown className="text-slate-400 text-sm pointer-events-none -ml-4" />
               </div>
 
-              {/* فیلد جستجو */}
               <input
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
@@ -193,14 +177,12 @@ const Header = () => {
                 placeholder="what do you need"
               />
               
-              {/* دکمه جستجو */}
               <button type="submit" className="bg-[#059473] hover:bg-[#047d62] transition-colors px-6 md:px-8 h-full font-bold text-[15px] text-white flex items-center justify-center rounded-r-sm">
                 SEARCH
               </button>
             </form>
           </div>
 
-          {/* شماره تماس */}
           <div className="hidden xl:flex items-center gap-4 shrink-0 px-2">
             <div className="w-[50px] h-[50px] rounded-full flex bg-[#f5f5f5] justify-center items-center">
               <FaPhoneAlt className="text-slate-800 text-lg" />
@@ -214,8 +196,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* ================= 4. منوی موبایل (Sidebar) ================= */}
-      {/* اوورلی پس‌زمینه */}
       <div
         onClick={() => setSidebarOpen(false)}
         className={`fixed inset-0 bg-black/50 z-[999] lg:hidden transition-opacity duration-300 ${
@@ -223,7 +203,6 @@ const Header = () => {
         }`}
       />
       
-      {/* پنل منو */}
       <div
         className={`w-[300px] fixed top-0 z-[1000] bg-white h-screen py-6 px-6 overflow-y-auto transition-transform duration-300 ease-in-out lg:hidden ${
           sidebarOpen ? "left-0" : "-left-[300px]"
