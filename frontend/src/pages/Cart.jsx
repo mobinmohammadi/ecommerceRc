@@ -12,7 +12,7 @@ const Card = () => {
     return (
         <div>
            <Header/>
-           <section className='bg-[url("/images/banner/shop.png")] h-[220px] mt-6 bg-cover bg-no-repeat relative bg-left'>
+           <section className='bg-[url("/images/banner/shop.png")] h-55 mt-6 bg-cover bg-no-repeat relative bg-left'>
             <div className='absolute left-0 top-0 w-full h-full bg-[#2422228a]'>
                 <div className='w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto'>
                     <div className='flex flex-col justify-center gap-1 items-center h-full w-full text-white'>
@@ -33,8 +33,8 @@ const Card = () => {
     <div className='w-[85%] lg:w-[90%] md:w-[90%] sm:w-[90%] mx-auto py-16'>
 
         {
-            card_products.length > 0 || outOfStockProduct > 0 ? <div className='flex flex-wrap'>
-                <div className='w-[67%] md-lg:w-full'>
+            card_products.length > 0 || outOfStockProduct > 0 ? <div className='flex flex-col sm:flex-row sm:flex-wrap'>
+                <div className='w-full md-lg:w-full'>
                     <div className='pr-3 md-lg:pr-0'>
                         <div className='flex flex-col gap-3'>
                             <div className='bg-white p-4'>
@@ -42,14 +42,14 @@ const Card = () => {
                             </div>
 
                 {
-                   card_products.map((p,i) => <div className='flex bg-white p-4 flex-col gap-2'>
+                   card_products.map((p,i) => <div className='flex bg-white p-4 flex-col md:flex-col gap-8'>
                    <div className='flex justify-start items-center'>
                        <h2 className='text-md text-slate-600 font-bold'>Easy Shop</h2>
                    </div>
 
                    {
-                       [1,2].map((p,i) => <div className='w-full flex flex-wrap'>
-                       <div className='flex sm:w-full gap-2 w-7/12'>
+                       [1,2].map((p,i) => <div className='w-full flex flex-col gap-5 md:flex-row md:flex-wrap'>
+                       <div className='flex sm:w-full gap-2 md:w-5/12 transition-all duration-1000'>
                            <div className='flex gap-2 justify-start items-center'>
                        <img className='w-[80px] h-[80px]' src={`/images/products/${i+1}.webp`} alt="" />
                        <div className='pr-4 text-slate-600'>
@@ -59,7 +59,7 @@ const Card = () => {
                            </div>
                        </div>
 
-   <div className='flex justify-between w-5/12 sm:w-full sm:mt-3'>
+   <div className='flex justify-between w-12/12 md:w-5/12 sm:w-full sm:mt-3'>
        <div className='pl-4 sm:pl-0'>
            <h2 className='text-lg text-orange-500'>$240</h2>
            <p className='line-through'>$300</p>
