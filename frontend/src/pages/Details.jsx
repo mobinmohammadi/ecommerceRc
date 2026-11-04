@@ -6,16 +6,116 @@ import { IoIosArrowForward } from "react-icons/io";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import Rating from '../components/Rating';
-import { FaHeart } from "react-icons/fa6";
+import { FaHeart, FaStar, FaRegStar, FaTwitter } from "react-icons/fa6";
 import { FaFacebookF, FaLinkedin, FaGithub } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa6";
-import Reviews from '../components/Reviews';
+import { HiOutlineChatBubbleLeftRight } from 'react-icons/hi2';
 import { Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+// ==========================================
+// کامپوننت داخلی نظرات (طراحی مدرن)
+// ==========================================
+const ModernReviews = () => {
+  const [rating, setRating] = useState(5);
+  const [hover, setHover] = useState(0);
+
+  const reviewsData = [
+    { id: 1, name: 'Kazi Ariyan', date: '7 Jan 2024', rating: 4, text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s." },
+    { id: 2, name: 'Ali Rezaei', date: '5 Feb 2024', rating: 5, text: "عالی بود! کیفیت محصول فوق‌العاده بود و دقیقاً همون چیزی بود که انتظار داشتم. ارسال هم خیلی سریع انجام شد." },
+    { id: 3, name: 'Sara Ahmadi', date: '12 Mar 2024', rating: 3, text: "رنگ محصول کمی با عکس متفاوت بود، اما در کل راضی هستم. بسته‌بندی خیلی خوب بود." },
+    { id: 4, name: 'Reza Karimi', date: '20 Apr 2024', rating: 4, text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s." },
+  ];
+
+  const getAvatarColor = (name) => {
+    const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-pink-500', 'bg-indigo-500', 'bg-teal-500'];
+    const index = name.charCodeAt(0) % colors.length;
+    return colors[index];
+  };
+
+  return (
+    <div className="w-full py-6 font-sans">
+      {/* لیست نظرات */}
+      <div className="flex flex-col gap-4 mb-8">
+        {reviewsData.map((review) => (
+          <div key={review.id} className="bg-white p-4 sm:p-6 rounded-2xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] border border-slate-100 hover:shadow-lg transition-shadow duration-300">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-3">
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-sm ${getAvatarColor(review.name)}`}>
+                  {review.name.charAt(0)}
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-800 text-sm sm:text-base">{review.name}</h3>
+                  <span className="text-xs text-slate-400">{review.date}</span>
+                </div>
+              </div>
+              
+              <div className="flex text-yellow-400 text-sm sm:text-base gap-0.5">
+                {[...Array(5)].map((_, i) => (
+                  <span key={i}>
+                    {i < review.rating ? <FaStar /> : <FaRegStar className="text-slate-300" />}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <p className="text-slate-600 text-sm leading-relaxed pl-0 sm:pl-[60px]">
+              {review.text}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* فرم ثبت نظر جدید */}
+      <div className="bg-slate-50 p-5 sm:p-8 rounded-2xl border border-slate-200">
+        <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <HiOutlineChatBubbleLeftRight className="text-[#059473]" />
+          Write a Review
+        </h3>
+
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-sm text-slate-600 font-medium">Your Rating:</span>
+          <div className="flex gap-1 text-2xl sm:text-3xl cursor-pointer">
+            {[...Array(5)].map((_, i) => {
+              const starValue = i + 1;
+              return (
+                <label key={i}>
+                  <input type="radio" name="rating" value={starValue} className="hidden" onClick={() => setRating(starValue)} />
+                  <span 
+                    className={`transition-colors duration-200 ${starValue <= (hover || rating) ? 'text-yellow-400' : 'text-slate-300'}`}
+                    onMouseEnter={() => setHover(starValue)}
+                    onMouseLeave={() => setHover(0)}
+                  >
+                    {starValue <= (hover || rating) ? <FaStar /> : <FaRegStar />}
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="relative">
+          <textarea 
+            rows="4" 
+            placeholder="Share your thoughts about this product..." 
+            className="w-full p-4 bg-white border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#059473]/50 focus:border-[#059473] transition-all resize-none text-sm text-slate-700 shadow-sm"
+          ></textarea>
+        </div>
+
+        <div className="mt-4 flex justify-end">
+          <button className="px-8 py-2.5 bg-[#059473] hover:bg-[#047a5f] text-white text-sm font-semibold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0">
+            Submit Review
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ==========================================
+// کامپوننت اصلی Details
+// ==========================================
 const Details = () => {
   const RMCarousel = Carousel.default ? Carousel.default : Carousel;
   const images = [1, 2, 3, 4, 5, 6];
@@ -71,9 +171,7 @@ const Details = () => {
       {/* ===== محصول اصلی ===== */}
       <section>
         <div className='w-[92%] sm:w-[90%] lg:w-[85%] mx-auto'>
-          {/* روی موبایل و تبلت تک‌ستونه، از lg دو ستونه */}
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8'>
-
             {/* --- گالری --- */}
             <div>
               <div className='p-3 sm:p-5 border'>
@@ -157,7 +255,7 @@ const Details = () => {
                 </div>
               </div>
 
-              {/* موجودی + شبکه‌ها */}
+              {/* موجودی + شبکه‌های اجتماعی */}
               <div className='flex flex-col sm:flex-row py-4 sm:py-5 gap-4 sm:gap-5'>
                 <div className='w-full sm:w-[150px] text-black font-bold text-base sm:text-xl flex flex-col gap-4 sm:gap-5'>
                   <span>Availability</span>
@@ -223,7 +321,7 @@ const Details = () => {
 
               <div>
                 {state === 'reviews' ? (
-                  <Reviews />
+                  <ModernReviews /> 
                 ) : (
                   <p className='py-5 text-slate-600 text-sm sm:text-base'>
                     What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry...
