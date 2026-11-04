@@ -17,6 +17,7 @@
     "react-multi-carousel": "^2.8.6",
     "react-range": "^1.10.0",
     "react-router": "^8.5.1",
+    "swiper": "^14.4.0",
     "tailwindcss": "^4.3.4"
   },
   "devDependencies": {
