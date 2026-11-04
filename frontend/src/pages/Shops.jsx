@@ -3,10 +3,10 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Link } from 'react-router';
 import { IoIosArrowForward } from "react-icons/io";
-
 import { Range } from 'react-range';
 import {AiFillStar} from 'react-icons/ai'
-import {CiStar} from 'react-icons/ci'
+import {CiStar} from 'react-icons/ci' 
+import Products from '../components/products/Products';
 
 const Shops = () => {
     const [filter, setFilter] = useState(true)
@@ -51,8 +51,8 @@ const Shops = () => {
                 <button onClick={() => setFilter(!filter)} className='text-center w-full py-2 px-3 bg-indigo-500 text-white'>Filter Product</button> 
             </div>
 
-            <div className='w-full flex flex-wrap gap-5'>
-                <div className={`w-6/12 lg:w-4/12 md:w-full flex flex-col gap-5 pr-8 ${filter ? 'md:h-0 md:overflow-hidden md:mb-6' : 'md:h-auto md:overflow-auto md:mb-0' } `}>
+            <div className='w-full flex flex-wrap'>
+                <div className={`w-12/12 lg:w-4/12 md:w-full pr-8 ${filter ? 'md:h-0 md:overflow-hidden md:mb-6' : 'md:h-auto md:overflow-auto md:mb-0' } `}>
                     <h2 className='text-3xl font-bold mb-3 text-slate-600'>Category </h2>
                     <div className='py-2'>
                         {
@@ -65,8 +65,7 @@ const Shops = () => {
 
         <div className='py-2 flex flex-col gap-5'>
             <h2 className='text-3xl font-bold mb-3 text-slate-600'>Price</h2>
-                    <div className="mx-2">
-
+             
              <Range
                 step={5}
                 min={50}
@@ -83,8 +82,7 @@ const Shops = () => {
     
                 )} 
              />  
-                    </div>
-         </div>
+         <div>
          <span className='text-slate-800 font-bold text-lg'>${Math.floor(state.values[0])} - ${Math.floor(state.values[1])}</span>  
            </div>
          </div>
@@ -138,20 +136,19 @@ const Shops = () => {
                   <span><CiStar/> </span>
                   <span><CiStar/> </span>
                   <span><CiStar/> </span>
-                  </div>
-
-
-
+                  </div> 
             </div> 
          </div>
+        
+        
+        <div className='py-5 flex flex-col gap-4'>
+            <Products title='Latest Product' />
+        </div>
 
 
 
-
-
-
-
-
+            </div>
+            </div>
             </div> 
            </section>
 
