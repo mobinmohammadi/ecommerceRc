@@ -28,6 +28,7 @@ const Header = () => {
     { to: "/blog", label: "BLOG" },
     { to: "/about", label: "ABOUT US" },
     { to: "/contact", label: "CONTACT US" },
+    { to: "/cart", label: "CART" },
   ];
 
   const activeClass = (path) =>
