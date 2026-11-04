@@ -39,10 +39,9 @@ const FeatureProducts = () => {
                   to="/product/details/new"
                   className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all"
                 >
-
-                <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
-                  <FaEye />
-                </li>
+                  <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
+                    <FaEye />
+                  </li>
                 </Link>
                 <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
                   <RiShoppingCartLine />
@@ -51,7 +50,9 @@ const FeatureProducts = () => {
             </div>
 
             <div className="py-3 text-slate-600 px-2">
-              <h2 className="font-bold">Product Name </h2>
+              <Link to="/product/details/new">
+                Product Name
+              </Link>{" "}
               <div className="flex justify-start items-center gap-3">
                 <span className="text-md font-semibold">$656</span>
                 <div className="flex">
