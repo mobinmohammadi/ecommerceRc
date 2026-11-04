@@ -4,6 +4,8 @@ import Shops from "./pages/Shops";
 import Cart from "./pages/Cart";
 import Shipping from "./pages/Shipping";
 import Details from "./pages/Details";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 let router = createBrowserRouter([
   {
@@ -26,6 +28,14 @@ let router = createBrowserRouter([
   {
     path: "/product/details/:slug",
     Component: Details,
+  },
+  {
+    path: "/login",
+    Component: Login,
+  },
+  {
+    path: "/register",
+    Component: Register,
   },
 ]);
 
