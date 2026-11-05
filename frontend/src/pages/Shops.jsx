@@ -11,9 +11,13 @@ import { BsFillGridFill } from "react-icons/bs";
 import { FaThList } from "react-icons/fa";
 import ShopProducts from "../components/products/ShopProduct";
 import Pagination from "../components/Pagination";
+import { useDispatch } from "react-redux";
 
 const Shops = () => {
   const [filter, setFilter] = useState(true);
+  const dispatch = useDispatch()
+
+  const {  } 
   const categorys = [
     "Mobiles",
     "Laptops",

@@ -1,91 +1,89 @@
+import { useState } from "react";
 import { Link } from "react-router";
-import "react-multi-carousel/lib/styles.css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import Carousel from "react-multi-carousel";
 
-const Products = ({ title }) => {
-  const RMCarousel = Carousel.default ? Carousel.default : Carousel;
-  const products = [
-    [1, 2, 3],
-    [4, 5, 6],
-  ];
+import "swiper/css";
+import "swiper/css/navigation";
 
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 3000 },
-      items: 1,
-    },
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 1,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 1,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-    },
+const Products = ({ title, products }) => {
+  console.log("pro => ", products);
+
+  // ✅ استفاده از state برای ذخیره عناصر DOM، به جای ref
+  const [prevEl, setPrevEl] = useState(null);
+  const [nextEl, setNextEl] = useState(null);
+
+  const breakpoints = {
+    0: { slidesPerView: 1, spaceBetween: 16 },
+    464: { slidesPerView: 1, spaceBetween: 16 },
+    1024: { slidesPerView: 1, spaceBetween: 16 },
+    3000: { slidesPerView: 1, spaceBetween: 16 },
   };
 
-  const ButtonGroup = ({ next, previous }) => {
-    return (
+  return (
+    <div className="flex gap-8 flex-col">
+      {/* دکمه‌ها بالای کاروسل قرار دارند و همچنان در ردیف عنوان هستند */}
       <div className="flex justify-between items-center">
-        <div className="text-xl font-bold text-slate-600"> {title} </div>
+        <div className="text-xl font-bold text-slate-600">{title}</div>
         <div className="flex justify-center items-center gap-3 text-slate-600">
           <button
-            onClick={() => previous()}
-            className="w-[30px] h-[30px] flex justify-center items-center bg-slate-300 border border-slate-200"
+            ref={(node) => setPrevEl(node)} // ✅ استفاده از callback ref برای دریافت DOM
+            type="button"
+            className="w-[30px] h-[30px] flex justify-center items-center bg-slate-300 border border-slate-200 disabled:opacity-50"
           >
             <IoIosArrowBack />
           </button>
           <button
-            onClick={() => next()}
-            className="w-[30px] h-[30px] flex justify-center items-center bg-slate-300 border border-slate-200"
+            ref={(node) => setNextEl(node)} // ✅ استفاده از callback ref برای دریافت DOM
+            type="button"
+            className="w-[30px] h-[30px] flex justify-center items-center bg-slate-300 border border-slate-200 disabled:opacity-50"
           >
             <IoIosArrowForward />
           </button>
         </div>
       </div>
-    );
-  };
 
-  return (
-    <div className="flex gap-8 flex-col-reverse">
-      <RMCarousel
-        autoPlay={false}
-        infinite={false}
-        arrows={false}
-        responsive={responsive}
-        transitionDuration={500}
-        renderButtonGroupOutside={true}
-        customButtonGroup={<ButtonGroup />}
+      <Swiper
+        modules={[Navigation]}
+        slidesPerView={1}
+        spaceBetween={16}
+        breakpoints={breakpoints}
+        loop={false}
+        navigation={{
+          prevEl, // ✅ در اینجا عنصر DOM واقعی است، نه یک ref
+          nextEl,
+        }}
+        className="w-full"
       >
-        {products.map((p, i) => {
-          return (
-            <div className="flex flex-col justify-start gap-2">
-              {p.map((pl, j) => (
-                <Link
-                  to="/product/details/new"
-                  className="flex justify-start items-start"
-                >
-                  <img
-                    className="w-[110px] h-[110px]"
-                    src={`/images/products/${pl}.webp`}
-                    alt=""
-                  />
-                  <div className="px-3 flex justify-start items-start gap-1 flex-col text-slate-600">
-                    <h2 className="text-slate-700 text-sm">Product Name</h2>
+          { products?.map((p, i) => (
+            
+              <SwiperSlide key={i}>
+                <div className="flex flex-col justify-start gap-2">
+                  {/* {console.log(p)} */}
+                  {p?.map((pl, j) => (
+                    <Link
+                      key={j}
+                      to="/product/details/new"
+                      className="flex justify-start items-start"
+                    >
+                      <img
+                        className="w-[110px] h-[110px]"
+                        src={pl.images[0]}
+                        alt=""
+                      />
+                      <div className="px-3 flex justify-start items-start gap-1 flex-col text-slate-600">
+                        <h2 className="text-slate-700 text-sm">Product Name</h2>
+                        <span className="text-lg font-bold">$434</span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </SwiperSlide>
+            ))
+            }
 
-                    <span className="text-lg font-bold">$434</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          );
-        })}
-      </RMCarousel>
+      </Swiper>
     </div>
   );
 };

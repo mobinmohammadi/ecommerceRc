@@ -17,8 +17,8 @@ const Banner = () => {
         <div className='w-full lg:mt-6'>
             <div className='w-[90%] max-w-[1400px] mx-auto'>
                 <div className='w-full flex flex-wrap lg:gap-8'>
-                    <div className='w-full'>
-                        <div className='my-8'>
+                    <div className='w-full z-10'>
+                        <div className='my-8 '>
                             {/* ✅ استفاده از متغیر جدید RMCarousel */}
                             <RMCarousel
                                 autoPlay={true}

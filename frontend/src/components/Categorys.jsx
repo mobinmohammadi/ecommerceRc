@@ -1,28 +1,23 @@
 import { Link } from "react-router";
-import "react-multi-carousel/lib/styles.css";
-import Carousel from 'react-multi-carousel';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
-const Categorys = () => {
-  const categorys = [
-    "Mobiles",
-    "Laptops",
-    "Speakers",
-    "Top wear",
-    "Footwear",
-    "Watches",
-    "Home Decor",
-    "Smart Watches",
-  ];
+// ✅ import استایل‌های Swiper
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
-const RMCarousel = Carousel.default ? Carousel.default : Carousel;
+const Categorys = ({ categoris}) => {
 
-  const responsive = {
-    superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 6 },
-    desktop: { breakpoint: { max: 3000, min: 1024 }, items: 6 },
-    tablet: { breakpoint: { max: 1024, min: 464 }, items: 4 },
-    mobile: { breakpoint: { max: 464, min: 0 }, items: 3 },
-    smmobile: { breakpoint: { max: 640, min: 0 }, items: 2 },
-    xsmobile: { breakpoint: { max: 440, min: 0 }, items: 1 },
+  // ✅ تنظیمات breakpoints مطابق با responsive قبلی
+  const breakpoints = {
+    0: { slidesPerView: 1, spaceBetween: 8 },
+    440: { slidesPerView: 2, spaceBetween: 8 },
+    640: { slidesPerView: 2, spaceBetween: 8 },
+    464: { slidesPerView: 3, spaceBetween: 8 },
+    1024: { slidesPerView: 4, spaceBetween: 8 },
+    3000: { slidesPerView: 6, spaceBetween: 8 },
+    4000: { slidesPerView: 6, spaceBetween: 8 },
   };
 
   return (
@@ -34,36 +29,45 @@ const RMCarousel = Carousel.default ? Carousel.default : Carousel;
         </div>
       </div>
 
-      <RMCarousel
-        autoPlay={true}
-        infinite={true}
-        arrows={true}
-        responsive={responsive}
-        transitionDuration={500}
-        itemClass="px-2" // ✅ اضافه کردن فاصله بین آیتم‌ها
+      <Swiper
+        modules={[Autoplay, Pagination]}
+        spaceBetween={8}
+        slidesPerView={1}
+        breakpoints={breakpoints}
+        autoplay={{ delay: 2500, disableOnInteraction: false }}
+        loop={true}
+        navigation={true}
+        pagination={{ clickable: true }}
+        className="pb-10 overflow-[initial] top-[70%]" // فضای اضافی برای نقطه‌های pagination
       >
-        {categorys.map((c, i) => (
-          <Link
-            className="h-[185px] border block bg-white rounded-md overflow-hidden hover:shadow-lg transition-shadow"
-            key={i}
-            to="#"
-          >
-            <div className="w-full h-full relative p-3 flex flex-col items-center justify-center">
-              {/* ✅ اصلاح مسیر عکس (به جای 3000 از 5173 استفاده شد) */}
-              <img
-                src={`/images/products/${i + 1}.webp`}
-                alt={c}
-                className="w-[100px] h-[100px] object-contain mb-4"
-              />
-              <div className="absolute bottom-0 w-full mx-auto font-bold left-0 flex justify-center items-center pb-3">
-                <span className="py-[4px] px-6 bg-[#3330305d] text-white text-sm rounded-sm">
-                  {c}
-                </span>
-              </div>
-            </div>
-          </Link>
-        ))}
-      </RMCarousel>
+        { categoris?.length
+          ?  categoris?.map((c, i) => 
+            (
+            
+              <SwiperSlide key={i}>
+                <Link
+                  className="h-[185px] border block bg-white rounded-md overflow-hidden hover:shadow-lg transition-shadow"
+                  to={c.slug}
+                >
+                  <div className="w-full h-full relative p-3 flex flex-col items-center justify-center">
+                    <img
+                      src={c.image}
+                      alt={c}
+                      className="w-[100px] h-[100px] object-contain mb-4"
+                    />
+                    <div className="absolute bottom-0 w-full mx-auto font-bold left-0 flex justify-center items-center pb-3">
+                      <span className="py-[4px] px-6 bg-[#3330305d] text-white text-sm rounded-sm">
+                        {c.name}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              </SwiperSlide>
+            ))
+
+            
+          : ""}
+      </Swiper>
     </div>
   );
 };

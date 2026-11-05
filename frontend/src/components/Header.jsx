@@ -5,7 +5,7 @@ import { FaFacebookF, FaList, FaLock, FaUser, FaLinkedin, FaGithub, FaPhoneAlt }
 import { FaTwitter, FaHeart, FaCartShopping } from "react-icons/fa6";
 import { Link, useLocation } from "react-router";
 
-const Header = () => {
+const Header = ({categoris}) => {
   const { pathname } = useLocation();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -144,10 +144,10 @@ const Header = () => {
 
             <div className={`absolute top-[55px] left-0 w-full bg-white border border-t-0 shadow-lg z-50 overflow-hidden transition-all duration-300 ${categoryOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"}`}>
               <ul className="py-2 text-slate-600 font-medium">
-                {categorys.map((c) => (
-                  <li key={c} className="px-6 py-2.5 hover:bg-slate-50 transition-colors">
-                    <Link className="text-sm block w-full" to={`/category/${c.toLowerCase().replace(/\s+/g, "-")}`}>
-                      {c}
+                {categoris?.map((c) => (
+                  <li key={c._id} className="px-6 py-2.5 hover:bg-slate-50 transition-colors">
+                    <Link className="text-sm block w-full" to={c.slug}>
+                      {c.name}
                     </Link>
                   </li>
                 ))}
