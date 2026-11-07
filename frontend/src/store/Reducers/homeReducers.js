@@ -21,6 +21,23 @@ export const get_products = createAsyncThunk(
   async (_, { fulfillWithValue }) => {
     try {
       const { data } = await api.get("home/get-products");
+
+      return fulfillWithValue(data);
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  },
+);
+
+// End -------------------------------------
+
+export const query_products = createAsyncThunk(
+  "product/query_products",
+  async (query, { fulfillWithValue }) => {
+    try {
+      const { data } = await api.get(
+        `home/query_products?category=${query.category}&&rating=${query.rating}&&lowPrice=${query.low}&&highPrice=${query.high}&&sortPrice=${query.sortPrice}&&pageNumber=${query.pageNumber}`,
+      );
       console.log("data ==> ", data);
 
       return fulfillWithValue(data);
@@ -32,18 +49,35 @@ export const get_products = createAsyncThunk(
 
 // End -------------------------------------
 
+export const get_product_Price = createAsyncThunk(
+  "product/price_range_product",
+  async (_, { fulfillWithValue }) => {
+    try {
+      const { data } = await api.get("home/price-range-product");
+      console.log("data ==> ", data);
+
+      return fulfillWithValue(data);
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  },
+);
+
 const HomeReducer = createSlice({
   name: "home",
   initialState: {
     categorys: [],
-    totalCategory: "",
+    totalCategory: 0,
     products: [],
+    totalProduct: 0,
+    parPage: 3,
     latest_Product: [],
     topRated_Product: [],
     discount_product: [],
-    totalProducts: "",
-    errorMessage: "",
-    succussMessage: "",
+    priceRange: {
+      low: 0,
+      high: 100,
+    },
   },
 
   reducers: {},
@@ -56,7 +90,7 @@ const HomeReducer = createSlice({
       .addCase(get_category.fulfilled, (state, { payload }) => {
         state.loader = false;
         state.categorys = payload.categorys;
-        state.totalCategory = payload.totalCategory;
+        state.totalCategory = payload.totalCategotyry;
       })
       .addCase(get_category.rejected, (state, { payload }) => {
         state.loader = false;
@@ -72,10 +106,43 @@ const HomeReducer = createSlice({
         state.products = payload.products;
         state.latest_Product = payload.latest_Product;
         state.topRated_Product = payload.topRated_Product;
-        state.discount_product = payload.discount_product
-        state.totalProducts = payload.totalProducts;
+        state.discount_product = payload.discount_product;
+        state.totalProduct = payload.totalProduct;
+        
       })
       .addCase(get_products.rejected, (state, { payload }) => {
+        state.loader = false;
+        state.errorMessage = payload.error;
+      })
+
+      // End -------------------------------------
+
+      .addCase(get_product_Price.fulfilled, (state, { payload }) => {
+        state.loader = false;
+        state.latest_Product = payload.latest_product;
+        state.priceRange = payload.priceRange;
+        console.log("payload===>",payload);
+        
+      })
+
+      .addCase(get_product_Price.rejected, (state, { payload }) => {
+        state.loader = false;
+        state.errorMessage = payload.error;
+      })
+
+      // End -------------------------------------
+
+      .addCase(query_products.fulfilled, (state, { payload }) => {
+        state.loader = false;
+        state.products = payload.products;
+        state.totalProduct = payload.totalProduct;
+        state.parPage = payload.parPage;
+        
+
+        
+      })
+
+      .addCase(query_products.rejected, (state, { payload }) => {
         state.loader = false;
         state.errorMessage = payload.error;
       });

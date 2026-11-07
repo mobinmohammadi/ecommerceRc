@@ -1,26 +1,30 @@
 import { useState } from "react";
 import { MdEmail } from "react-icons/md";
-import { IoMdPhonePortrait, IoIosArrowDown, IoMdArrowDropdown } from "react-icons/io";
-import { FaFacebookF, FaList, FaLock, FaUser, FaLinkedin, FaGithub, FaPhoneAlt } from "react-icons/fa";
+import { IoMdPhonePortrait, IoIosArrowDown } from "react-icons/io";
+import {
+  FaFacebookF,
+  FaList,
+  FaLock,
+  FaUser,
+  FaLinkedin,
+  FaGithub,
+  FaPhoneAlt,
+} from "react-icons/fa";
 import { FaTwitter, FaHeart, FaCartShopping } from "react-icons/fa6";
 import { Link, useLocation } from "react-router";
+import { useSelector } from "react-redux";
 
-const Header = ({categoris}) => {
+const Header = () => {
   const { pathname } = useLocation();
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [category, setCategory] = useState("");
+  const { categorys } = useSelector((state) => state.home);
 
   const user = true;
   const wishlist_count = 4;
   const cart_count = 4;
-
-  const categorys = [
-    "Mobiles", "Laptops", "Speakers", "Top wear",
-    "Footwear", "Watches", "Home Decor", "Smart Watches",
-  ];
 
   const navLinks = [
     { to: "/", label: "HOME" },
@@ -28,125 +32,172 @@ const Header = ({categoris}) => {
     { to: "/blog", label: "BLOG" },
     { to: "/about", label: "ABOUT US" },
     { to: "/contact", label: "CONTACT US" },
-    { to: "/cart", label: "CART" },
-    { to: "/login", label: "Login" },
-    { to: "/register", label: "Register" },
   ];
 
   const activeClass = (path) =>
     pathname === path
-      ? "text-[#059473]"
-      : "text-[#2b3445] hover:text-[#059473] transition-colors";
+      ? "text-emerald-600"
+      : "text-slate-700 hover:text-emerald-600 transition-colors";
 
   return (
-    <div className="w-full bg-white font-sans shadow-sm pb-4">
-      <div className="hidden md:block bg-[#caddff] w-full">
-        <div className="w-[90%] max-w-[1400px] mx-auto">
-          <div className="flex w-full justify-between items-center h-[45px] text-slate-600">
-            <ul className="flex justify-start items-center gap-8 font-semibold text-slate-800">
-              <li className="flex relative justify-center items-center gap-2 text-sm after:absolute after:h-[18px] after:w-[1px] after:bg-[#afafaf] after:-right-[16px] after:top-1/2 after:-translate-y-1/2">
-                <MdEmail />
+    <header className="sticky top-0 z-[100] w-full bg-white/95 backdrop-blur-md border-b border-slate-100 font-sans">
+      <div className="hidden md:block bg-slate-900 text-slate-300">
+        <div className="w-[92%] max-w-[1400px] mx-auto">
+          <div className="flex justify-between items-center h-10 text-xs">
+            <ul className="flex items-center gap-6">
+              <li className="flex items-center gap-2 hover:text-white transition">
+                <MdEmail className="text-emerald-400" />
                 <span>support@gmail.com</span>
               </li>
-              <li className="flex justify-center items-center gap-2 text-sm">
-                <IoMdPhonePortrait />
+              <li className="flex items-center gap-2 hover:text-white transition">
+                <IoMdPhonePortrait className="text-emerald-400" />
                 <span>+(123) 3243 343</span>
               </li>
             </ul>
 
-            <div className="flex justify-center items-center gap-10">
-              <div className="flex justify-center items-center gap-4 text-slate-800">
-                <a href="#" aria-label="Facebook" className="hover:text-[#059473] transition"><FaFacebookF /></a>
-                <a href="#" aria-label="Twitter" className="hover:text-[#059473] transition"><FaTwitter /></a>
-                <a href="#" aria-label="LinkedIn" className="hover:text-[#059473] transition"><FaLinkedin /></a>
-                <a href="#" aria-label="GitHub" className="hover:text-[#059473] transition"><FaGithub /></a>
+            <div className="flex items-center gap-6">
+              <div className="flex items-center gap-3">
+                {[FaFacebookF, FaTwitter, FaLinkedin, FaGithub].map(
+                  (Icon, i) => (
+                    <a
+                      key={i}
+                      href="#"
+                      className="w-7 h-7 flex items-center justify-center rounded-full bg-white/5 hover:bg-emerald-500 hover:text-white transition-all"
+                    >
+                      <Icon size={12} />
+                    </a>
+                  ),
+                )}
               </div>
 
-              <div className="flex group cursor-pointer text-slate-800 text-sm justify-center items-center gap-1 relative before:absolute before:h-[18px] before:w-[1px] before:bg-[#afafaf] before:-left-[20px] before:top-1/2 before:-translate-y-1/2 after:absolute after:h-[18px] after:w-[1px] after:bg-[#afafaf] after:-right-[20px] after:top-1/2 after:-translate-y-1/2">
-                <img src="/images/language.png" alt="language" className="w-5 h-5" />
-                <IoMdArrowDropdown />
-                <ul className="absolute invisible opacity-0 transition-all top-10 rounded-sm duration-200 text-white p-2 w-[100px] flex flex-col gap-3 group-hover:visible group-hover:opacity-100 group-hover:top-6 group-hover:bg-black z-50 shadow-lg">
-                  <li className="hover:text-[#059473] transition">Hindi</li>
-                  <li className="hover:text-[#059473] transition">English</li>
+              <div className="relative group cursor-pointer flex items-center gap-1.5 px-3 py-1 rounded-md hover:bg-white/5 transition">
+                <img
+                  src="/images/language.png"
+                  alt="language"
+                  className="w-4 h-4"
+                />
+                <span className="text-xs font-medium">EN</span>
+                <IoIosArrowDown
+                  size={12}
+                  className="group-hover:rotate-180 transition-transform duration-300"
+                />
+                <ul className="absolute top-full right-0 mt-1 invisible opacity-0 translate-y-1 group-hover:visible group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 w-28 bg-white text-slate-700 rounded-lg shadow-xl border border-slate-100 py-1.5 z-50">
+                  <li className="px-3 py-1.5 text-xs hover:bg-emerald-50 hover:text-emerald-600 cursor-pointer transition">
+                    English
+                  </li>
+                  <li className="px-3 py-1.5 text-xs hover:bg-emerald-50 hover:text-emerald-600 cursor-pointer transition">
+                    فارسی
+                  </li>
                 </ul>
               </div>
 
-              {user ? (
-                <Link className="flex cursor-pointer justify-center items-center gap-2 text-sm font-semibold text-slate-800 hover:text-[#059473] transition" to="/dashboard">
-                  <FaUser />
-                  <span>mobin mohammadi</span>
-                </Link>
-              ) : (
-                <Link className="flex cursor-pointer justify-center items-center gap-2 text-sm font-semibold text-slate-800 hover:text-[#059473] transition" to="/login">
-                  <FaLock />
-                  <span>Login</span>
-                </Link>
-              )}
+              <Link
+                className="flex items-center gap-2 text-xs font-semibold hover:text-emerald-400 transition"
+                to={user ? "/dashboard" : "/login"}
+              >
+                {user ? <FaUser size={12} /> : <FaLock size={12} />}
+                <span>{user ? "mobin mohammadi" : "Login"}</span>
+              </Link>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="w-[90%] max-w-[1400px] mx-auto">
-        <div className="flex justify-between items-center h-[80px] lg:h-[90px]">
-          
+      <div className="w-[92%] max-w-[1400px] mx-auto">
+        <div className="flex justify-between items-center h-16 lg:h-20 gap-4">
           <div className="flex items-center justify-between w-full lg:w-auto">
-            <Link to="/" className="flex items-center gap-2">
-              <img src="/images/logo.png" alt="Easy Shop" className="h-[35px] object-contain" />
+            <Link to="/" className="flex items-center gap-2 shrink-0">
+              <img
+                src="/images/logo.png"
+                alt="Easy Shop"
+                className="h-8 lg:h-9 object-contain"
+              />
             </Link>
-            <button className="lg:hidden text-2xl text-slate-800" onClick={() => setSidebarOpen(true)}>
+            <button
+              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg bg-slate-100 text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open menu"
+            >
               <FaList />
             </button>
           </div>
 
-          <ul className="hidden lg:flex items-center gap-8 text-[15px] font-semibold">
+          <nav className="hidden lg:flex items-center gap-7 text-[13.5px] font-semibold tracking-wide">
             {navLinks.map(({ to, label }) => (
-              <li key={to}>
-                <Link className={`${activeClass(to)}`} to={to}>
-                  {label}
-                </Link>
-              </li>
+              <Link key={to} className={activeClass(to)} to={to}>
+                {label}
+              </Link>
             ))}
-          </ul>
+          </nav>
 
-          <div className="hidden lg:flex items-center gap-4">
-            <Link to="/wishlist" className="relative flex justify-center items-center w-[45px] h-[45px] rounded-full bg-[#f5f5f5] hover:bg-[#e2e2e2] transition-all">
-              <FaHeart className="text-[#059473] text-xl" />
-              <span className="absolute -top-1 -right-1 bg-[#ef4444] text-white text-[11px] font-bold w-5 h-5 flex justify-center items-center rounded-full border-2 border-white">
-                {wishlist_count}
-              </span>
+          <div className="hidden lg:flex items-center gap-2.5">
+            <Link
+              to="/wishlist"
+              className="relative w-11 h-11 flex items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-emerald-500 hover:text-white transition-all duration-300 hover:scale-105"
+              aria-label="Wishlist"
+            >
+              <FaHeart size={16} />
+              {wishlist_count > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-white">
+                  {wishlist_count}
+                </span>
+              )}
             </Link>
 
-            <Link to="/cart" className="relative flex justify-center items-center w-[45px] h-[45px] rounded-full bg-[#f5f5f5] hover:bg-[#e2e2e2] transition-all">
-              <FaCartShopping className="text-[#059473] text-xl" />
-              <span className="absolute -top-1 -right-1 bg-[#ef4444] text-white text-[11px] font-bold w-5 h-5 flex justify-center items-center rounded-full border-2 border-white">
-                {cart_count}
-              </span>
+            <Link
+              to="/cart"
+              className="relative w-11 h-11 flex items-center justify-center rounded-full bg-slate-100 text-slate-700 hover:bg-emerald-500 hover:text-white transition-all duration-300 hover:scale-105"
+              aria-label="Cart"
+            >
+              <FaCartShopping size={16} />
+              {cart_count > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-white">
+                  {cart_count}
+                </span>
+              )}
+            </Link>
+
+            <Link
+              to="/login"
+              className="ml-1 px-5 h-11 flex items-center justify-center rounded-full bg-emerald-600 text-white text-[13px] font-semibold hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-600/20"
+            >
+              {user ? "Dashboard" : "Login"}
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="w-[90%] max-w-[1400px] mx-auto mt-2 lg:mt-4">
-        <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-6 w-full">
-          
-          <div className="hidden lg:block relative w-[260px] shrink-0">
+      <div className="w-[92%] max-w-[1400px] mx-auto pb-4">
+        <div className="flex items-center gap-3 lg:gap-5">
+          <div className="hidden lg:block relative w-[240px] shrink-0">
             <button
               onClick={() => setCategoryOpen((v) => !v)}
-              className="w-full h-[52px] bg-[#059473] text-white flex justify-between px-6 items-center font-bold text-[15px] rounded-sm transition-colors hover:bg-[#047d62]"
+              className="w-full h-12 bg-emerald-600 text-white flex justify-between px-5 items-center font-semibold text-sm rounded-xl transition-colors hover:bg-emerald-700"
             >
-              <div className="flex items-center gap-3">
-                <FaList className="text-lg" />
+              <div className="flex items-center gap-2.5">
+                <FaList size={14} />
                 <span>All Category</span>
               </div>
-              <IoIosArrowDown className={`transition-transform duration-300 ${categoryOpen ? "rotate-180" : ""}`} />
+              <IoIosArrowDown
+                size={16}
+                className={`transition-transform duration-300 ${categoryOpen ? "rotate-180" : ""}`}
+              />
             </button>
 
-            <div className={`absolute top-[55px] left-0 w-full bg-white border border-t-0 shadow-lg z-50 overflow-hidden transition-all duration-300 ${categoryOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"}`}>
-              <ul className="py-2 text-slate-600 font-medium">
-                {categoris?.map((c) => (
-                  <li key={c._id} className="px-6 py-2.5 hover:bg-slate-50 transition-colors">
-                    <Link className="text-sm block w-full" to={c.slug}>
+            <div
+              className={`absolute top-[calc(100%+6px)] left-0 w-full bg-white border border-slate-100 rounded-xl shadow-2xl shadow-slate-200/60 z-50 overflow-hidden transition-all duration-300 origin-top ${
+                categoryOpen
+                  ? "max-h-[420px] opacity-100 scale-y-100"
+                  : "max-h-0 opacity-0 scale-y-95"
+              }`}
+            >
+              <ul className="py-2 text-slate-600 font-medium max-h-[400px] overflow-y-auto">
+                {categorys?.map((c) => (
+                  <li key={c._id}>
+                    <Link
+                      className="block px-5 py-2.5 text-sm hover:bg-emerald-50 hover:text-emerald-600 transition-colors border-l-2 border-transparent hover:border-emerald-500"
+                      to={`/products?category=${c.name}`}
+                    >
                       {c.name}
                     </Link>
                   </li>
@@ -155,73 +206,100 @@ const Header = ({categoris}) => {
             </div>
           </div>
 
-          <div className="w-full flex-grow">
-            <form onSubmit={(e) => e.preventDefault()} className="flex w-full h-[52px] border border-slate-200 rounded-sm relative bg-white group focus-within:border-[#059473] transition-colors">
-              
-              <div className="hidden md:flex items-center border-l border-slate-200 px-2 bg-transparent">
+          <div className="flex-grow">
+            <form
+              onSubmit={(e) => e.preventDefault()}
+              className="flex w-full h-12 border border-slate-200 rounded-xl bg-white overflow-hidden focus-within:border-emerald-500 focus-within:ring-4 focus-within:ring-emerald-500/10 transition-all"
+            >
+              <div className="hidden md:flex items-center gap-1 pl-3 pr-2 border-r border-slate-100">
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-[160px] text-slate-700 text-sm font-medium bg-transparent outline-none cursor-pointer border-none"
+                  className="max-w-[150px] text-slate-700 text-sm font-medium bg-transparent outline-none cursor-pointer border-none py-2"
                 >
-                  <option value="">Select category</option>
-                  {categorys.map((c) => (
-                    <option key={c} value={c}>{c}</option>
+                  <option value="">All</option>
+                  {categorys.map((c, i) => (
+                    <option key={i} value={c.name}>
+                      {c.name}
+                    </option>
                   ))}
                 </select>
-                <IoIosArrowDown className="text-slate-400 text-sm pointer-events-none -ml-4" />
+                <IoIosArrowDown
+                  size={12}
+                  className="text-slate-400 pointer-events-none"
+                />
               </div>
 
               <input
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
-                className="flex-grow bg-transparent text-slate-600 outline-none px-4 h-full text-sm placeholder:text-slate-400"
+                className="flex-grow bg-transparent text-slate-700 outline-none px-4 h-full text-sm placeholder:text-slate-400"
                 type="text"
-                placeholder="what do you need"
+                placeholder="Search for products..."
               />
-              
-              <button type="submit" className="bg-[#059473] hover:bg-[#047d62] transition-colors px-6 md:px-8 h-full font-bold text-[15px] text-white flex items-center justify-center rounded-r-sm">
+
+              <button
+                type="submit"
+                className="bg-emerald-600 hover:bg-emerald-700 transition-colors px-6 md:px-8 h-full font-semibold text-sm text-white flex items-center justify-center"
+              >
                 SEARCH
               </button>
             </form>
           </div>
 
-          <div className="hidden xl:flex items-center gap-4 shrink-0 px-2">
-            <div className="w-[50px] h-[50px] rounded-full flex bg-[#f5f5f5] justify-center items-center">
-              <FaPhoneAlt className="text-slate-800 text-lg" />
+          <div className="hidden xl:flex items-center gap-3 shrink-0">
+            <div className="w-11 h-11 rounded-full flex bg-emerald-50 text-emerald-600 justify-center items-center">
+              <FaPhoneAlt size={15} />
             </div>
-            <div className="flex flex-col">
-              <h2 className="text-[15px] font-bold text-slate-800 dir-ltr">+8803242343243</h2>
-              <span className="text-xs text-slate-500">support 33/45 time</span>
+            <div className="flex flex-col leading-tight">
+              <span className="text-sm font-bold text-slate-800 dir-ltr">
+                +880 324 234 3243
+              </span>
+              <span className="text-[11px] text-slate-500">Support 24/7</span>
             </div>
           </div>
-
         </div>
       </div>
 
       <div
         onClick={() => setSidebarOpen(false)}
-        className={`fixed inset-0 bg-black/50 z-[999] lg:hidden transition-opacity duration-300 ${
+        className={`fixed inset-0 w-screen h-screen bg-slate-900/60 backdrop-blur-sm z-50 lg:hidden transition-opacity duration-300 ${
           sidebarOpen ? "visible opacity-100" : "invisible opacity-0"
         }`}
       />
-      
+
       <div
-        className={`w-[300px] fixed top-0 z-[1000] bg-white h-screen py-6 px-6 overflow-y-auto transition-transform duration-300 ease-in-out lg:hidden ${
+        className={`fixed top-0 z-[1000] w-[300px] max-w-[85vw] bg-white h-screen py-6 px-6 overflow-y-auto shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${
           sidebarOpen ? "left-0" : "-left-[300px]"
         }`}
       >
         <div className="flex justify-between items-center mb-8 pb-4 border-b border-slate-100">
-          <img src="/images/logo.png" alt="Easy Shop" className="h-[30px] object-contain" />
-          <button onClick={() => setSidebarOpen(false)} className="text-2xl text-slate-500 hover:text-red-500">
+          <img
+            src="/images/logo.png"
+            alt="Easy Shop"
+            className="h-8 object-contain"
+          />
+          <button
+            onClick={() => setSidebarOpen(false)}
+            aria-label="Close menu"
+            className="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-rose-50 hover:text-rose-500 transition text-xl"
+          >
             &times;
           </button>
         </div>
 
-        <ul className="flex flex-col gap-4 font-bold text-slate-700">
+        <ul className="flex flex-col gap-1 font-semibold text-slate-700">
           {navLinks.map(({ to, label }) => (
             <li key={to}>
-              <Link className="block py-1 hover:text-[#059473]" to={to} onClick={() => setSidebarOpen(false)}>
+              <Link
+                className={`block px-4 py-3 rounded-lg transition-colors ${
+                  pathname === to
+                    ? "bg-emerald-50 text-emerald-600"
+                    : "hover:bg-slate-50"
+                }`}
+                to={to}
+                onClick={() => setSidebarOpen(false)}
+              >
                 {label}
               </Link>
             </li>
@@ -229,18 +307,33 @@ const Header = ({categoris}) => {
         </ul>
 
         <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col gap-4 text-sm">
-          <Link to={user ? "/dashboard" : "/login"} className="flex items-center gap-2 text-slate-600 hover:text-[#059473]">
-            <FaUser /> {user ? "mobin mohammad" : "Login"}
+          <Link
+            to={user ? "/dashboard" : "/login"}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <FaUser size={13} /> {user ? "mobin mohammadi" : "Login"}
           </Link>
-          <div className="flex items-center gap-2 text-slate-600">
-            <MdEmail /> support@gmail.com
+          <div className="flex items-center gap-3 text-slate-600 px-2">
+            <MdEmail className="text-emerald-500" /> support@gmail.com
           </div>
-          <div className="flex items-center gap-2 text-slate-600">
-            <IoMdPhonePortrait /> +8803242343243
+          <div className="flex items-center gap-3 text-slate-600 px-2">
+            <IoMdPhonePortrait className="text-emerald-500" /> +880 324 234 3243
+          </div>
+          <div className="flex items-center gap-3 px-2 pt-2">
+            {[FaFacebookF, FaTwitter, FaLinkedin, FaGithub].map((Icon, i) => (
+              <a
+                key={i}
+                href="#"
+                className="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-emerald-500 hover:text-white transition-all"
+              >
+                <Icon size={13} />
+              </a>
+            ))}
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

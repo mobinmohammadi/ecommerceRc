@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Link } from "react-router";
@@ -8,306 +8,276 @@ import { AiFillStar } from "react-icons/ai";
 import { CiStar } from "react-icons/ci";
 import Products from "../components/products/Products";
 import { BsFillGridFill } from "react-icons/bs";
-import { FaThList } from "react-icons/fa";
-import ShopProducts from "../components/products/ShopProduct";
+import { FaThList, FaFilter, FaTimes } from "react-icons/fa";
 import Pagination from "../components/Pagination";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import ShopProducts from "./../components/products/ShopProduct";
+import {
+  get_category,
+  get_product_Price,
+  query_products,
+} from "./../store/Reducers/homeReducers";
 
 const Shops = () => {
-  const [filter, setFilter] = useState(true);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const {
+    products,
+    categorys,
+    priceRange,
+    totalProduct,
+    latest_Product,
+    parPage,
+  } = useSelector((state) => state.home);
+  console.log(latest_Product);
+  
 
-  const {  } 
-  const categorys = [
-    "Mobiles",
-    "Laptops",
-    "Speakers",
-    "Top wear",
-    "Footwear",
-    "Watches",
-    "Home Decor",
-    "Smart Watches",
-  ];
-
-  const [state, setState] = useState({ values: [50, 1500] });
+  const [filter, setFilter] = useState(false);
+  const [state, setState] = useState({
+    values: [priceRange.low, priceRange.high],
+  });
   const [rating, setRating] = useState("");
   const [styles, setStyles] = useState("grid");
-
-  const [parPage, setParPage] = useState(1);
+  const [category, setCategory] = useState("");
+  const [sortPrice, setSortPrice] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
 
+  useEffect(() => {
+    dispatch(get_product_Price());
+    dispatch(get_category());
+  }, []);
+
+  useEffect(() => {
+    setState({ values: [priceRange.low, priceRange.high] });
+  }, [priceRange]);
+
+  const queryChangeCategory = (e, value) => {
+    setCategory(e.target.checked ? value : "");
+  };
+
+  useEffect(() => {
+    dispatch(
+      query_products({
+        low: state.values[0],
+        high: state.values[1],
+        sortPrice,
+        category,
+        rating,
+        pageNumber,
+      }),
+    );
+  }, [state, sortPrice, category, rating, pageNumber]);
+
   return (
-    <div>
+    <div className="bg-slate-50 min-h-screen">
       <Header />
-      <section className='bg-[url("/images/banner/shop.png")] h-[220px] mt-6 bg-cover bg-no-repeat relative bg-left'>
-        <div className="absolute left-0 top-0 w-full h-full bg-[#2422228a]">
-          <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto">
-            <div className="flex flex-col justify-center gap-1 items-center h-full w-full text-white">
-              <h2 className="text-3xl font-bold">Shop Page </h2>
-              <div className="flex justify-center items-center gap-2 text-2xl w-full">
-                <Link to="/">Home</Link>
-                <span className="pt-1">
-                  <IoIosArrowForward />
-                </span>
-                <span>Shop </span>
-              </div>
-            </div>
+
+      <section className='relative h-[240px] mt-6 bg-[url("http://localhost:3000/images/banner/shop.png")] bg-cover bg-center overflow-hidden rounded-2xl w-[92%] mx-auto'>
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/85 via-slate-900/50 to-transparent" />
+        <div className="relative z-10 h-full flex flex-col justify-center px-8 md:px-16 text-white">
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-3">Shop</h1>
+          <div className="flex items-center gap-2 text-sm text-slate-200">
+            <Link to="/" className="hover:text-white">Home</Link>
+            <IoIosArrowForward className="text-xs" />
+            <span className="text-emerald-400 font-medium">Shop</span>
           </div>
         </div>
       </section>
 
-      <section className="py-16">
-        <div className="w-[85%] md:w-[80%] sm:w-[90%] lg:w-[90%] h-full mx-auto">
-          <div className={` md:block hidden ${!filter ? "mb-6" : "mb-0"} `}>
+      <section className="py-10">
+        <div className="w-[92%] lg:w-[90%] mx-auto">
+
+          <div className="lg:hidden mb-5 flex gap-2">
             <button
-              onClick={() => setFilter(!filter)}
-              className="text-center w-full py-2 px-3 bg-indigo-500 text-white"
+              onClick={() => setFilter(true)}
+              className="flex-1 flex items-center justify-center gap-2 py-3 bg-white border border-slate-200 rounded-xl text-slate-700 font-semibold shadow-sm"
             >
-              Filter Product
+              <FaFilter className="text-emerald-600" />
+              Filters
             </button>
           </div>
 
-          <div className="w-full flex sm:flex-wrap flex-col  sm:flex-row">
-            <div
-              className={`w-12/12 md-lg:w-4/12 md:w-full pr-8 ${filter ? "md:h-0 md:overflow-hidden md:mb-6" : "md:h-auto md:overflow-auto md:mb-0"} `}
+          <div className="flex flex-wrap gap-6">
+
+            <aside
+              className={`
+                lg:w-3/12 lg:block lg:relative
+                ${filter
+                  ? "fixed inset-0 z-50 w-full bg-black/40 lg:bg-transparent flex"
+                  : "hidden lg:block"}
+              `}
             >
-              <h2 className="text-3xl font-bold mb-3 text-slate-600">
-                Category{" "}
-              </h2>
-              <div className="py-2">
-                {categorys.map((c, i) => (
-                  <div className="flex justify-start items-center gap-2 py-1">
-                    <input type="checkbox" id={c} />
-                    <label
-                      className="text-slate-600 block cursor-pointer"
-                      htmlFor={c}
-                    >
-                      {c}
-                    </label>
-                  </div>
-                ))}
-              </div>
-
-              <div className="py-2 flex flex-col gap-5">
-                <h2 className="text-3xl font-bold mb-3 text-slate-600">
-                  Price
-                </h2>
-                <div className="px-2">
-                  <Range
-                    step={5}
-                    min={50}
-                    max={1500}
-                    values={state.values}
-                    onChange={(values) => setState({ values })}
-                    renderTrack={({ props, children }) => (
-                      <div
-                        {...props}
-                        className="w-full h-[6px] bg-slate-200 rounded-full cursor-pointer"
-                      >
-                        {children}
-                      </div>
-                    )}
-                    renderThumb={({ props }) => (
-                      <div
-                        className="w-[15px] h-[15px] bg-[#059473] rounded-full"
-                        {...props}
-                      />
-                    )}
-                  />
-                </div>
-                <div>
-                  <span className="text-slate-800 font-bold text-lg">
-                    ${Math.floor(state.values[0])} - $
-                    {Math.floor(state.values[1])}
-                  </span>
-                </div>
-              </div>
-
-              <div className="py-3 flex flex-col gap-4">
-                <h2 className="text-3xl font-bold mb-3 text-slate-600">
-                  Rating{" "}
-                </h2>
-                <div className="flex flex-col gap-3">
-                  <div
-                    onClick={() => setRating(5)}
-                    className="text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer"
+              <div
+                className={`
+                  w-full lg:w-auto bg-slate-50 lg:bg-transparent
+                  lg:static lg:shadow-none
+                  ${filter ? "absolute right-0 top-0 h-full w-[85%] max-w-sm p-4 overflow-y-auto shadow-2xl bg-white" : ""}
+                `}
+              >
+                {filter && (
+                  <button
+                    onClick={() => setFilter(false)}
+                    className="lg:hidden mb-4 flex items-center gap-2 text-slate-600 font-medium"
                   >
-                    <span>
-                      <AiFillStar />{" "}
-                    </span>
-                    <span>
-                      <AiFillStar />{" "}
-                    </span>
-                    <span>
-                      <AiFillStar />{" "}
-                    </span>
-                    <span>
-                      <AiFillStar />{" "}
-                    </span>
-                    <span>
-                      <AiFillStar />{" "}
-                    </span>
-                  </div>
+                    <FaTimes /> Close
+                  </button>
+                )}
 
-                  <div
-                    onClick={() => setRating(4)}
-                    className="text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer"
-                  >
-                    <span>
-                      <AiFillStar />{" "}
-                    </span>
-                    <span>
-                      <AiFillStar />{" "}
-                    </span>
-                    <span>
-                      <AiFillStar />{" "}
-                    </span>
-                    <span>
-                      <AiFillStar />{" "}
-                    </span>
-                    <span>
-                      <CiStar />{" "}
-                    </span>
-                  </div>
+                <div className="lg:sticky lg:top-4 space-y-4">
 
-                  <div
-                    onClick={() => setRating(3)}
-                    className="text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer"
-                  >
-                    <span>
-                      <AiFillStar />{" "}
-                    </span>
-                    <span>
-                      <AiFillStar />{" "}
-                    </span>
-                    <span>
-                      <AiFillStar />{" "}
-                    </span>
-                    <span>
-                      <CiStar />{" "}
-                    </span>
-                    <span>
-                      <CiStar />{" "}
-                    </span>
-                  </div>
-
-                  <div
-                    onClick={() => setRating(2)}
-                    className="text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer"
-                  >
-                    <span>
-                      <AiFillStar />{" "}
-                    </span>
-                    <span>
-                      <AiFillStar />{" "}
-                    </span>
-                    <span>
-                      <CiStar />{" "}
-                    </span>
-                    <span>
-                      <CiStar />{" "}
-                    </span>
-                    <span>
-                      <CiStar />{" "}
-                    </span>
-                  </div>
-
-                  <div
-                    onClick={() => setRating(1)}
-                    className="text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer"
-                  >
-                    <span>
-                      <AiFillStar />{" "}
-                    </span>
-                    <span>
-                      <CiStar />{" "}
-                    </span>
-                    <span>
-                      <CiStar />{" "}
-                    </span>
-                    <span>
-                      <CiStar />{" "}
-                    </span>
-                    <span>
-                      <CiStar />{" "}
-                    </span>
-                  </div>
-
-                  <div className="text-orange-500 flex justify-start items-start gap-2 text-xl cursor-pointer">
-                    <span>
-                      <CiStar />{" "}
-                    </span>
-                    <span>
-                      <CiStar />{" "}
-                    </span>
-                    <span>
-                      <CiStar />{" "}
-                    </span>
-                    <span>
-                      <CiStar />{" "}
-                    </span>
-                    <span>
-                      <CiStar />{" "}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="py-5 flex flex-col gap-4 md:hidden">
-                <Products title="Latest Product" />
-              </div>
-            </div>
-
-            <div className="w-12/12 md-lg:w-8/12 md:w-full pt-5">
-              <h2 className="text-lg font-medium text-slate-600 pb-4">
-                14 Products{" "}
-              </h2>
-
-              <div className="sm:pl-8 md:pl-0">
-                <div className="py-4 bg-white mb-10 px-3 rounded-md flex justify-between items-start border">
-                  <h2 className="text-lg font-medium sm:flex hidden text-slate-600">
-                    14 Products{" "}
-                  </h2>
-                  <div className="flex justify-center items-center gap-3">
-                    <select
-                      className="p-1 border outline-0 text-slate-600 font-semibold"
-                      name=""
-                      id=""
-                    >
-                      <option value="">Sort By</option>
-                      <option value="low-to-high">Low to High Price</option>
-                      <option value="high-to-low">High to Low Price </option>
-                    </select>
-                    <div className="flex justify-center items-start gap-4 md-lg:hidden">
-                      <div
-                        onClick={() => setStyles("grid")}
-                        className={`p-2 ${styles === "grid" && "bg-slate-300"} text-slate-600 hover:bg-slate-300 cursor-pointer rounded-sm `}
-                      >
-                        <BsFillGridFill />
-                      </div>
-                      <div
-                        onClick={() => setStyles("list")}
-                        className={`p-2 ${styles === "list" && "bg-slate-300"} text-slate-600 hover:bg-slate-300 cursor-pointer rounded-sm `}
-                      >
-                        <FaThList />
-                      </div>
+                  <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+                    <h3 className="text-lg font-bold text-slate-800 mb-4 pb-3 border-b border-slate-100">
+                      Category
+                    </h3>
+                    <div className="space-y-1 max-h-64 overflow-y-auto pr-1">
+                      {categorys.map((c, i) => (
+                        <label
+                          key={i}
+                          htmlFor={c.name}
+                          className={`flex items-center gap-3 px-2 py-2 rounded-lg cursor-pointer transition ${
+                            category === c.name
+                              ? "bg-emerald-50 text-emerald-700"
+                              : "hover:bg-slate-50 text-slate-600"
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            id={c.name}
+                            checked={category === c.name}
+                            onChange={(e) => queryChangeCategory(e, c.name)}
+                            className="accent-emerald-600 w-4 h-4"
+                          />
+                          <span className="text-sm font-medium">{c.name}</span>
+                        </label>
+                      ))}
                     </div>
                   </div>
-                </div>
 
-                <div className="pb-8">
-                  <ShopProducts styles={styles} />
-                </div>
+                  <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+                    <h3 className="text-lg font-bold text-slate-800 mb-4 pb-3 border-b border-slate-100">
+                      Price
+                    </h3>
+                    <Range
+                      step={5}
+                      min={priceRange.low}
+                      max={priceRange.high}
+                      values={state.values}
+                      onChange={(values) => setState({ values })}
+                      renderTrack={({ props, children }) => (
+                        <div
+                          {...props}
+                          className="relative w-full h-[6px] bg-slate-200 rounded-full cursor-pointer"
+                        >
+                          {children}
+                        </div>
+                      )}
+                      renderThumb={({ props }) => (
+                        <div
+                          {...props}
+                          className="w-4 h-4 bg-white border-2 border-emerald-600 rounded-full shadow"
+                        />
+                      )}
+                    />
+                    <div className="mt-4 flex items-center justify-between text-sm">
+                      <span className="px-3 py-1 bg-slate-100 rounded-lg text-slate-700 font-semibold">
+                        ${Math.floor(state.values[0])}
+                      </span>
+                      <span className="text-slate-400">—</span>
+                      <span className="px-3 py-1 bg-emerald-50 text-emerald-700 rounded-lg font-semibold">
+                        ${Math.floor(state.values[1])}
+                      </span>
+                    </div>
+                  </div>
 
-                <div>
+                  <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+                    <h3 className="text-lg font-bold text-slate-800 mb-4 pb-3 border-b border-slate-100">
+                      Rating
+                    </h3>
+                    <div className="space-y-2">
+                      {[5, 4, 3, 2, 1].map((r) => (
+                        <button
+                          key={r}
+                          onClick={() => setRating(r)}
+                          className={`w-full text-left px-2 py-1.5 rounded-lg transition flex items-center gap-1 ${
+                            rating === r ? "bg-emerald-50" : "hover:bg-slate-50"
+                          }`}
+                        >
+                          {[1, 2, 3, 4, 5].map((i) =>
+                            i <= r ? (
+                              <AiFillStar key={i} className="text-amber-400" />
+                            ) : (
+                              <CiStar key={i} className="text-slate-300" />
+                            )
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 hidden lg:block">
+                    <Products title="Latest Product" products={latest_Product} />
+                  </div>
+                </div>
+              </div>
+            </aside>
+
+            <div className="flex-1 min-w-0 w-full">
+
+              <div className="bg-white rounded-2xl px-5 py-3 mb-6 shadow-sm border border-slate-100 flex flex-wrap justify-between items-center gap-3">
+                <h2 className="text-slate-700">
+                  <span className="font-bold text-emerald-600 text-lg">
+                    {totalProduct}
+                  </span>{" "}
+                  <span className="text-sm">Products</span>
+                </h2>
+                <div className="flex items-center gap-3">
+                  <select
+                    value={sortPrice}
+                    onChange={(e) => setSortPrice(e.target.value)}
+                    className="px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg outline-none text-slate-600 font-medium cursor-pointer"
+                  >
+                    <option value="">Sort By</option>
+                    <option value="low-to-high">Low to High</option>
+                    <option value="high-to-low">High to Low</option>
+                  </select>
+                  <div className="hidden md:flex items-center bg-slate-50 rounded-lg p-1 border border-slate-200">
+                    <button
+                      onClick={() => setStyles("grid")}
+                      className={`p-2 rounded-md transition ${
+                        styles === "grid"
+                          ? "bg-emerald-600 text-white"
+                          : "text-slate-500"
+                      }`}
+                    >
+                      <BsFillGridFill size={16} />
+                    </button>
+                    <button
+                      onClick={() => setStyles("list")}
+                      className={`p-2 rounded-md transition ${
+                        styles === "list"
+                          ? "bg-emerald-600 text-white"
+                          : "text-slate-500"
+                      }`}
+                    >
+                      <FaThList size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pb-8">
+                <ShopProducts products={products} styles={styles} />
+              </div>
+
+              <div className="flex justify-center pb-6">
+                {totalProduct > parPage && (
                   <Pagination
                     pageNumber={pageNumber}
                     setPageNumber={setPageNumber}
-                    totalItem={10}
+                    totalItem={totalProduct}
                     parPage={parPage}
-                    showItem={Math.floor(10 / 3)}
+                    showItem={Math.floor(totalProduct / parPage)}
                   />
-                </div>
+                )}
               </div>
             </div>
           </div>

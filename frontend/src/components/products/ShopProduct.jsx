@@ -3,56 +3,95 @@ import { RiShoppingCartLine } from "react-icons/ri";
 import Rating from "../Rating";
 import { Link } from "react-router";
 
-const ShopProducts = ({ styles }) => {
+const ShopProducts = ({ products, styles }) => {
   return (
     <div
-      className={`w-full grid ${styles === "grid" ? "grid-cols-2 md-lg:grid-cols-2 md:grid-cols-2" : "grid-cols-1 md-lg:grid-cols-2 md:grid-cols-2"} gap-3 `}
+      className={`w-full grid gap-5 ${
+        styles === "grid"
+          ? "grid-cols-2 md-lg:grid-cols-2 md:grid-cols-2"
+          : "grid-cols-1 md-lg:grid-cols-2 md:grid-cols-2"
+      }`}
     >
-      {[1, 2, 3, 4, 5, 6].map((p, i) => (
+      {products.map((p, i) => (
         <div
           key={i}
-          className={`flex transition-all duration-1000 hover:shadow-md hover:-translate-y-3 ${styles === "grid" ? "flex-col justify-start items-start" : "justify-start items-center md-lg:flex-col md-lg:justify-start md-lg:items-start"} w-full gap-4 bg-white p-1 rounded-md`}
+          className={`group relative bg-white rounded-2xl border border-slate-100 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-slate-200/60 hover:-translate-y-1.5 hover:border-emerald-200 ${
+            styles === "grid"
+              ? "flex flex-col"
+              : "flex items-center gap-5 md-lg:flex-col md-lg:items-stretch md-lg:gap-0"
+          }`}
         >
           <div
-            className={
+            className={`relative overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100 ${
               styles === "grid"
-                ? "w-full relative group h-[210px] md:h-[270px] xs:h-[170px] overflow-hidden"
-                : "md-lg:w-full relative group h-[210px] md:h-[270px] overflow-hidden"
-            }
+                ? "w-full h-[230px] xs:h-[180px] md:h-[250px]"
+                : "w-[150px] h-[150px] md-lg:w-full md-lg:h-[210px] shrink-0"
+            }`}
           >
             <img
-              className="h-[200px] rounded-md md:h-[200px] xs:h-[200px] w-full object-contain"
-              src={`/images/products/${i + 1}.webp`}
-              alt=""
+              className="w-full h-full object-contain p-5 transition-transform duration-700 ease-out group-hover:scale-110"
+              src={p.images[0]}
+              alt={p.name}
             />
 
-            <ul className="flex transition-all duration-700 -bottom-10 justify-center items-center gap-2 absolute w-full group-hover:bottom-3">
-              <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
-                <FaRegHeart />
+            {p.discount > 0 && (
+              <span className="absolute top-3 left-3 px-2.5 py-1 text-[11px] font-bold text-white bg-gradient-to-r from-rose-500 to-rose-600 rounded-full shadow-lg shadow-rose-500/30">
+                {p.discount}% OFF
+              </span>
+            )}
+
+            <ul
+              className={`absolute flex justify-center items-center gap-2 transition-all duration-400 ease-out ${
+                styles === "grid"
+                  ? "left-0 right-0 -bottom-16 group-hover:bottom-4"
+                  : "left-4 top-1/2 -translate-y-1/2 flex-col -translate-x-16 group-hover:translate-x-0 md-lg:flex-row md-lg:left-0 md-lg:right-0 md-lg:top-auto md-lg:-bottom-16 md-lg:translate-x-0 md-lg:translate-y-0 md-lg:group-hover:bottom-4"
+              }`}
+            >
+              <li
+                title="Add to wishlist"
+                className="w-10 h-10 cursor-pointer bg-white/95 backdrop-blur-md shadow-lg shadow-slate-300/40 flex justify-center items-center rounded-full text-slate-600 hover:bg-emerald-600 hover:text-white hover:scale-110 transition-all duration-300"
+              >
+                <FaRegHeart size={15} />
               </li>
               <Link
-                to="/product/details/new"
-                className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all"
+                to={`/product/details/new/${p._id}`}
+                title="Quick view"
+                className="w-10 h-10 cursor-pointer bg-white/95 backdrop-blur-md shadow-lg shadow-slate-300/40 flex justify-center items-center rounded-full text-slate-600 hover:bg-emerald-600 hover:text-white hover:scale-110 transition-all duration-300"
               >
-                <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
-                  <FaEye />
-                </li>
+                <FaEye size={15} />
               </Link>
-              <li className="w-[38px] h-[38px] cursor-pointer bg-white flex justify-center items-center rounded-full hover:bg-[#059473] hover:text-white hover:rotate-[720deg] transition-all">
-                <RiShoppingCartLine />
+              <li
+                title="Add to cart"
+                className="w-10 h-10 cursor-pointer bg-white/95 backdrop-blur-md shadow-lg shadow-slate-300/40 flex justify-center items-center rounded-full text-slate-600 hover:bg-emerald-600 hover:text-white hover:scale-110 transition-all duration-300"
+              >
+                <RiShoppingCartLine size={15} />
               </li>
             </ul>
           </div>
 
-          <div className="flex justify-start items-start flex-col gap-1">
-            <Link to="/product/details/new">Product Name</Link>{" "}
-            <div className="flex justify-start items-center gap-3">
-              <span className="text-md font-semibold">$656</span>
-              <div className="flex">
+          <div
+            className={`flex flex-col gap-2.5 p-5 ${
+              styles === "grid" ? "w-full" : "flex-1 md-lg:w-full"
+            }`}
+          >
+            <Link
+              to={`/product/details/new/${p._id}`}
+              className="text-[15px] font-semibold text-slate-700 leading-6 line-clamp-2 hover:text-emerald-600 transition-colors duration-200"
+            >
+              {p.name || "Product Name"}
+            </Link>
+
+            <div className="flex justify-between items-center gap-3 mt-1">
+              <span className="text-xl font-extrabold text-emerald-600 tracking-tight">
+                ${p.price}
+              </span>
+              <div className="flex items-center">
                 <Rating ratings={4.5} />
               </div>
             </div>
           </div>
+
+          <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-transparent group-hover:ring-emerald-100 pointer-events-none transition-all duration-300" />
         </div>
       ))}
     </div>

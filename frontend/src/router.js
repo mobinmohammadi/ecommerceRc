@@ -6,6 +6,7 @@ import Shipping from "./pages/Shipping";
 import Details from "./pages/Details";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import CategoryShop from "./pages/CategoryShop";
 
 let router = createBrowserRouter([
   {
@@ -26,8 +27,14 @@ let router = createBrowserRouter([
     Component: Shipping,
   },
   {
+    
     path: "/product/details/:slug",
     Component: Details,
+  },
+  {
+    
+    path: "/products/?",
+    Component: CategoryShop,
   },
   {
     path: "/login",
