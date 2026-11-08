@@ -13,6 +13,7 @@ export default defineConfig({
       "react-dom",
       "react-redux",
       "react-multi-carousel",
+      '@redux/toolkit',
     ],
   },
 
