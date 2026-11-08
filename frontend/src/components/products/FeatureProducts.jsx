@@ -1,14 +1,51 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaEye, FaRegHeart } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
 import Rating from "../Rating";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { add_to_cart } from "../../store/Reducers/cartReducer";
+import toast from "react-hot-toast";
+import { messageClear } from "../../store/Reducers/cartReducer";
 
 const FeatureProducts = ({ products }) => {
   const [endIndex, setEndIndex] = useState(6);
+  const { succsussMessage, errorMessage } = useSelector((state) => state.cart);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (succsussMessage) {
+      toast.success(succsussMessage);
+    }
+    dispatch(messageClear());
+  }, [succsussMessage]);
+
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+    }
+    dispatch(messageClear());
+  }, [errorMessage]);
 
   const changMoorProduct = () => {
     setEndIndex((prev) => prev + 3);
+  };
+  const navigate = useNavigate();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const addToBasket = (productId) => {
+    if (userInfo) {
+      dispatch(
+        add_to_cart({
+          userId: userInfo.id,
+          quantity: 1,
+          productId,
+        }),
+      );
+    } else {
+      navigate("/login");
+    }
   };
 
   const hasMore = products && endIndex < products.length;
@@ -60,6 +97,7 @@ const FeatureProducts = ({ products }) => {
                     <FaEye size={15} />
                   </Link>
                   <li
+                    onClick={() => addToBasket(p._id)}
                     title="Add to cart"
                     className="w-10 h-10 cursor-pointer bg-white/95 backdrop-blur-md shadow-lg shadow-slate-300/40 flex justify-center items-center rounded-full text-slate-600 hover:bg-emerald-600 hover:text-white hover:scale-110 transition-all duration-300"
                   >

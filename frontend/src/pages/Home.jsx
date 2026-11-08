@@ -7,14 +7,32 @@ import Footer from "../components/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { get_category, get_products } from "../store/Reducers/homeReducers";
+import { get_user_info } from "../store/Reducers/authReducer";
+import { get_cart_product } from "../store/Reducers/cartReducer";
 
 const Home = () => {
   const distpatch = useDispatch();
-  const { categorys , products, latest_Product ,  topRated_Product , discount_product} = useSelector((state) => state.home);
+  const {
+    categorys,
+    products,
+    latest_Product,
+    topRated_Product,
+    discount_product,
+  } = useSelector((state) => state.home);
+  const { userInfo } = useSelector((state) => state.auth);
+  const { cart_products } = useSelector((state) => state.cart);
+
 
   useEffect(() => {
     distpatch(get_category());
-    distpatch(get_products())
+    distpatch(get_products());
+    distpatch(get_cart_product());
+    console.log(cart_products);
+    
+  }, []);
+
+  useEffect(() => {
+    distpatch(get_user_info());
   }, []);
 
   return (
@@ -23,7 +41,7 @@ const Home = () => {
       <Banner />
       <Categorys categoris={categorys} />
       <div className="py-[45px]">
-        <FeatureProducts products={products}/>
+        <FeatureProducts products={products} />
       </div>
 
       <div className="py-10">

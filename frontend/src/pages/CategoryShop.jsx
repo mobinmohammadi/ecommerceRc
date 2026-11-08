@@ -22,7 +22,6 @@ const CategoryShop = () => {
 
   const [ searchParams , setSearchParams ] = useSearchParams()
   const category = searchParams.get("category")
-  console.log(category);
   
 
 

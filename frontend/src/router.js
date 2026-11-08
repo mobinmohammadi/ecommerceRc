@@ -7,6 +7,7 @@ import Details from "./pages/Details";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import CategoryShop from "./pages/CategoryShop";
+import SearchProducts from "./pages/SearchProducts";
 
 let router = createBrowserRouter([
   {
@@ -35,6 +36,11 @@ let router = createBrowserRouter([
     
     path: "/products/?",
     Component: CategoryShop,
+  },
+    {
+    
+    path: "/products/search?",
+    Component: SearchProducts,
   },
   {
     path: "/login",
