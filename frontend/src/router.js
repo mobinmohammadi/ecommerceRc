@@ -1,6 +1,4 @@
-
-import { createBrowserRouter } from "react-router-dom";
-
+import { createBrowserRouter } from "react-router";
 import Home from "./pages/Home";
 import Shops from "./pages/Shops";
 import Cart from "./pages/Cart";
@@ -11,7 +9,7 @@ import Register from "./pages/Register";
 import CategoryShop from "./pages/CategoryShop";
 import SearchProducts from "./pages/SearchProducts";
 
-const router = createBrowserRouter([
+let router = createBrowserRouter([
   {
     path: "/",
     Component: Home,
@@ -20,6 +18,7 @@ const router = createBrowserRouter([
     path: "/shops",
     Component: Shops,
   },
+
   {
     path: "/cart",
     Component: Cart,
@@ -29,15 +28,18 @@ const router = createBrowserRouter([
     Component: Shipping,
   },
   {
+    
     path: "/product/details/:slug",
     Component: Details,
   },
   {
-    path: "/products",
+    
+    path: "/products/?",
     Component: CategoryShop,
   },
-  {
-    path: "/products/search",
+    {
+    
+    path: "/products/search?",
     Component: SearchProducts,
   },
   {
