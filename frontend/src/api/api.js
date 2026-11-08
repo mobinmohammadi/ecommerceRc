@@ -6,4 +6,5 @@ const api = axios.create({
   baseURL: `${production}/api`,
 });
 
+
 export default api;

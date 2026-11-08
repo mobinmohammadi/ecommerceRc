@@ -86,6 +86,7 @@ const Products = ({ title, products }) => {
               ))}
             </div>
           </SwiperSlide>
+          
         ))}
       </Swiper>
     </div>
